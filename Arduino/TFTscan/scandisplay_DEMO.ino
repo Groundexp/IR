@@ -3,9 +3,9 @@
 #include <TouchScreen.h>
 
 // AND DEFINES WILL BE HERE 
-#define MINPRESSURE 10
+#define MINPRESSURE 10 
 #define MAXPRESSURE 1000
-
+#define SIZE 3 // размер пикселя
 
 #define	BLACK   0x0000
 #define	BLUE    0x001F
@@ -34,6 +34,10 @@ long T, Tmid, delta,
 Tmax=72,
 Tmin=19;
 short x1,y1,a;
+int sizeX1 =2,
+sizeX2=240,
+sizeY1=2,
+sizeY2=239;
 
 void setup(){
 tft.reset();
@@ -135,47 +139,47 @@ if ((p.x<10)&&(p.y<10)){
 //__________________________________________________________
 //ФУНКЦИИ
 int Colour(){
- for ( y1 = 2; y1<239; y1+=3) { 
+ for ( y1 = sizeY1; y1<sizeY2; y1+=SIZE) { 
    tft.setCursor(280, 230);
    tft.setTextColor(GREEN);  tft.setTextSize(1);
    tft.fillRect(260,230, 50, 50, BLACK);
    tft.print(100*y1/236);
    tft.println("%");
    T = 16;
-   for (x1 = 2; x1<240; x1+=3){
+   for (x1 = sizeX1; x1<sizeX2; x1+=SIZE){
      if (T<Tmin) { 
-       for (int i=0; i<3; i++){ 
-        for( int k=0; k<3;k++){
+       for (int i=0; i<SIZE; i++){ 
+        for( int k=0; k<SIZE;k++){
           tft.drawPixel(x1+k, y1+i, tft.color565(255, 0, 255));
      }}}
      if ((Tmin<=T)&&(T<=Tmin+delta)) { 
-        for (int i=0; i<3; i++){ 
-         for( int k=0; k<3;k++){
+        for (int i=0; i<SIZE; i++){ 
+         for( int k=0; k<SIZE;k++){
           tft.drawPixel(x1+k, y1+i, tft.color565(((Tmin+delta-T)*255/delta), 0, 255)); //0 - теплее
      }}}
      if ((Tmin+delta<T)&&(T<=Tmin+2*delta)){ 
-        for (int i=0; i<3; i++){ 
-         for( int k=0; k<3;k++){
+        for (int i=0; i<SIZE; i++){ 
+         for( int k=0; k<SIZE;k++){
           tft.drawPixel(x1+k, y1+i, tft.color565(0, 255-((Tmin+delta+delta-T)*255)/delta, 255));//255-тепло
      }}}
      if (((Tmin+2*delta)<T)&&(T<=Tmin+3*delta)){ 
-       for (int i=0; i<3; i++){ 
-         for( int k=0; k<3;k++){
+       for (int i=0; i<SIZE; i++){ 
+         for( int k=0; k<SIZE;k++){
            tft.drawPixel(x1+k, y1+i, tft.color565(0, 255, (Tmin+3*delta-T)*255/delta));
      }}}// 0 - теплее
      if ((Tmin+3*delta<T)&&(T<=Tmin+4*delta)){  
-       for (int i=0; i<3; i++){ 
-        for( int k=0; k<3;k++){
+       for (int i=0; i<SIZE; i++){ 
+        for( int k=0; k<SIZE;k++){
          tft.drawPixel(x1+k, y1+i, tft.color565((255-(Tmin+4*delta-T)*255/delta), 255, 0));
      }}} //255 - теплее
      if ((Tmin+4*delta<T)&&(T<=Tmin+5*delta)){  
-      for (int i=0; i<3; i++){ 
-       for( int k=0; k<3;k++){
+      for (int i=0; i<SIZE; i++){ 
+       for( int k=0; k<SIZE;k++){
         tft.drawPixel(x1+k, y1+i, tft.color565(255,(Tmin+5*delta-T)*255/delta , 0));
      }}} // 0 -теплее
      if (Tmin+5*delta<T){  
-       for (int i=0; i<3; i++){ 
-         for( int k=0; k<3;k++){
+       for (int i=0; i<SIZE; i++){ 
+         for( int k=0; k<SIZE;k++){
            tft.drawPixel(x1+k, y1+i, tft.color565(255, 0, 0)); 
      }}}
      T++;
@@ -184,7 +188,7 @@ int Colour(){
 }
 
 int Black(){
- for ( y1 = 2; y1<239; y1+=3) { 
+ for ( y1 = sizeY1; y1<sizeY2; y1+=SIZE) { 
    //счет процентов
    tft.setCursor(280, 230);
    tft.setTextColor(GREEN);  tft.setTextSize(1);
@@ -193,20 +197,20 @@ int Black(){
    tft.println("%");
  //get_T();
    T = 16; // текущая температура ect.
-   for (x1 = 2; x1<240; x1+=3){
+   for (x1 = sizeX1; x1<sizeX2; x1+=SIZE){
         if (T<Tmin) { 
-          for (int i=0; i<3; i++){ 
-            for( int k=0; k<3;k++){
+          for (int i=0; i<SIZE; i++){ 
+            for( int k=0; k<SIZE;k++){
              tft.drawPixel(x1+k, y1+i, tft.color565(0, 0, 0)); }
           }}
         if ((Tmin<=T)&&(T<=Tmax)) { 
-           for (int i=0; i<3; i++){ 
-             for( int k=0; k<3;k++){
+           for (int i=0; i<SIZE; i++){ 
+             for( int k=0; k<SIZE;k++){
               tft.drawPixel(x1+k, y1+i, tft.color565(255-(Tmax-T)*255/Tmid, 255-(Tmax-T)*255/Tmid, 255-(Tmax-T)*255/Tmid));
           }}}
         if (Tmin+5*delta<T){  
-           for (int i=0; i<3; i++){ 
-             for( int k=0; k<3;k++){
+           for (int i=0; i<SIZE; i++){ 
+             for( int k=0; k<SIZE;k++){
               tft.drawPixel(x1+k, y1+i, tft.color565(255, 255, 255)); }
            }}
         T++; //закомментить, если раскомментите get_T()
